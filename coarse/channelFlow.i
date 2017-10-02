@@ -29,7 +29,7 @@ linear_solvers:
 realms:
 
   - name: realm_1
-    mesh: ../mesh/channel_structured_0_ic.exo
+    mesh: ../mesh/channel_coarse_ic.exo
     use_edges: no
     automatic_decomposition_type: rcb
 
@@ -61,14 +61,14 @@ realms:
 
     initial_conditions:
       - constant: ic_1
-        target_name: [Unspecified-2-HEX]
+        target_name: [interior]
         value:
           pressure: 0
           velocity: [0.0,0.0,0.0]
           turbulent_ke: 0.0
 
     material_properties:
-      target_name: [Unspecified-2-HEX]
+      target_name: [interior]
       specifications:
         - name: density
           type: constant

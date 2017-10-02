@@ -27,8 +27,9 @@ polynomial_order = 1.
 Re_tau = 550
 viscosity = 0.0000157
 
-msh_dbname = "channel.exo"
-ic_dbname = "channel_ic.exo"
+dbname = 'channel_coarse'
+msh_dbname = dbname + ".exo"
+ic_dbname = dbname + "_ic.exo"
 
 mpibin = '/Users/mhenryde/spack/opt/spack/darwin-elcapitan-x86_64/gcc-6.3.0/openmpi-1.10.3-ljq6fsplvbw4qjiia4ho7xy4lcghu44o/bin/mpiexec'
 abl_mesh = '/Users/mhenryde/wind/NaluWindUtils/build/src/mesh/abl_mesh'
