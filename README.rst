@@ -70,12 +70,10 @@ density is :math:`\rho=1.177 \unitfrac{kg}{m^3}` and the viscosity is
 Using this repository
 ---------------------
 
-A.  Generating the meshes
+A.  Setting up the problem
 
-    1. Download the meshes from `Workshop on High-Order CFD Methods <https://how5.cenaero.be/content/ws2-les-plane-channel-ret550>`_
-    #. Open the `.geo` file in Gmsh and apply the 3D mesh. Save the mesh and export it to VTK format as well (Make sure to check "Save All"). Edit the `.geo` file and uncomment the different `nl` lines for the different mesh resolutions.
-    #. Convert the VTK mesh to ExodusII format using `vtk2exo.py`
-    #. Use Cubit to add sidesets to the meshes by using `add_sidesets.jou` (you might have to edit it a bit to get what you want)
+    1. Download and build `NaluWindUtils <https://github.com/NaluCFD/NaluWindUtils>`_
+    #. Edit and run `setup_problem.py` to generate the mesh and populate the initial condition
 
 B. Running
 

@@ -1,0 +1,35 @@
+# -*- mode: yaml -*-
+
+nalu_abl_mesh:
+
+  output_db: channel.exo
+
+  spec_type: bounding_box
+
+  vertices:
+    - [0.0, 0.0, 0.0]
+    - [6.283185307179586476, 2.0, 3.14159265358979323846]
+
+  mesh_dimensions: [128, 96, 64]
+
+  fluid_part_name: interior
+
+  xmin_boundary_name : inlet
+
+  xmax_boundary_name : outlet
+
+  ymin_boundary_name : bottomwall
+
+  ymax_boundary_name : topwall
+
+  zmin_boundary_name : back
+
+  zmax_boundary_name : front
+
+  x_spacing:
+    spacing_type: constant_spacing
+
+  y_spacing:
+    spacing_type: geometric_stretching
+    stretching_factor: 1.095445
+    bidirectional: true

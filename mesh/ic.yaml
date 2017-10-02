@@ -1,0 +1,17 @@
+# -*- mode: yaml -*-
+
+nalu_preprocess:
+
+  input_db: channel.exo
+
+  output_db: channel_ic.exo
+
+  tasks:
+    - init_channel_fields
+
+  init_channel_fields:
+    fluid_parts: [interior]
+
+    velocity:
+      Re_tau : 550
+      viscosity : 0.0000157
