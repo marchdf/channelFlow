@@ -10,7 +10,7 @@ linear_solvers:
     type: tpetra
     method: gmres
     preconditioner: sgs
-    tolerance: 1e-8
+    tolerance: 1e-5
     max_iterations: 75
     kspace: 75
     output_level: 0
@@ -19,7 +19,7 @@ linear_solvers:
     type: tpetra
     method: gmres
     preconditioner: muelu
-    tolerance: 1e-8
+    tolerance: 1e-5
     max_iterations: 75
     kspace: 75
     output_level: 0
@@ -29,7 +29,7 @@ linear_solvers:
 realms:
 
   - name: realm_1
-    mesh: ../mesh/channel_structured_0.exo
+    mesh: ../mesh/channel_structured_0_ic.exo
     use_edges: no
     automatic_decomposition_type: rcb
 
@@ -55,8 +55,8 @@ realms:
 
         - TurbKineticEnergy:
             name: myTke
-            max_iterations: 3
-            convergence_tolerance: 1.0e-2
+            max_iterations: 1
+            convergence_tolerance: 1.0e-5
 
 
     initial_conditions:
@@ -64,47 +64,39 @@ realms:
         target_name: [Unspecified-2-HEX]
         value:
           pressure: 0
-          velocity: [34.6,0.0,0.0]
-          turbulent_ke: 0.00108
+          velocity: [0.0,0.0,0.0]
+          turbulent_ke: 0.0
 
     material_properties:
       target_name: [Unspecified-2-HEX]
       specifications:
         - name: density
           type: constant
-          value: 1.185
+          value: 1.177
         - name: viscosity
           type: constant
-          value: 1.8398e-5
+          value: 1.846e-5
 
     boundary_conditions:
 
-    - wall_boundary_condition: bc_wall
+    - wall_boundary_condition: bc_bottomwall
       target_name: bottomwall
       wall_user_data:
         velocity: [0,0,0]
         turbulent_ke: 0.0
-        use_wall_function: yes
+        use_wall_function: no
 
-    - wall_boundary_condition: bc_wall
+    - wall_boundary_condition: bc_topwall
       target_name: topwall
       wall_user_data:
         velocity: [0,0,0]
         turbulent_ke: 0.0
-        use_wall_function: yes
+        use_wall_function: no
 
-    - inflow_boundary_condition: bc_inflow
-      target_name: inlet
-      inflow_user_data:
-        velocity: [34.6,0.0,0.0]
-        turbulent_ke: 0.00108
-
-    - open_boundary_condition: bc_open
-      target_name: outlet
-      open_user_data:
-        velocity: [0,0,0]
-        pressure: 0.0
-        turbulent_ke: 0.00108
+    - periodic_boundary_condition: bc_inlet_outlet
+      target_name: [inlet, outlet]
+      periodic_user_data:
+        search_tolerance: 0.0001
 
     - periodic_boundary_condition: bc_front_back
       target_name: [front, back]
@@ -133,6 +125,11 @@ realms:
             pressure: element
             turbulent_ke: element
 
+        - source_terms:
+            momentum: body_force
+
+        - source_term_parameters:
+            momentum: [0.00008766, 0.0, 0.0]
 
     turbulence_averaging:
       time_filter_interval: 100000.0
@@ -145,7 +142,7 @@ realms:
       output_file_name: results/channelFlow.dat
       frequency: 100
       parameters: [0,0]
-      target_name: bottomwall
+      target_name: [bottomwall, topwall]
 
     output:
       output_data_base_name: results/channelFlow.e
@@ -166,8 +163,8 @@ Time_Integrators:
   - StandardTimeIntegrator:
       name: ti_1
       start_time: 0
-      time_step: 1.0e-10
-      termination_time: 1000
+      time_step: 1.0e-6
+      termination_time: 4635
       time_stepping_type: adaptive
       time_step_count: 0
 

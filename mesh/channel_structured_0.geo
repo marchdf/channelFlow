@@ -9,7 +9,7 @@ nl = Round(64./N); // Coarse
 // ----------- END INPUT --------------
 
 lc = Pi/nl;
-Printf("dx+ = %g",lc*590);
+Printf("dx+ = %g",lc*550);
 
 lx=2*Pi;
 lz=Pi;
@@ -38,7 +38,7 @@ y[ny/2-1] = 0.5;
 y[ny-1] = 1.;
 
 For i In {0:ny/2-1}
-  Printf("y+[%g] = %g", i, 2*590*y[i]);
+  Printf("y+[%g] = %g", i, 2*550*y[i]);
   layer[i] = 1;
 EndFor
 For i In {0:ny-1}
