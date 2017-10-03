@@ -32,6 +32,7 @@ realms:
     mesh: ../mesh/channel_coarse_ic.exo
     use_edges: no
     automatic_decomposition_type: rcb
+    support_inconsistent_multi_state_restart: yes
 
     time_step_control:
      target_courant: 10.0
@@ -125,15 +126,14 @@ realms:
             pressure: element
             turbulent_ke: element
 
+        - input_variables_from_file:
+            velocity: velocity
+
         - source_terms:
             momentum: body_force
 
         - source_term_parameters:
             momentum: [0.00008766, 0.0, 0.0]
-
-    turbulence_averaging:
-      time_filter_interval: 100000.0
-
 
     post_processing:
 
@@ -163,10 +163,11 @@ Time_Integrators:
   - StandardTimeIntegrator:
       name: ti_1
       start_time: 0
-      time_step: 1.0e-6
+      time_step: 0.5
       termination_time: 4635
       time_stepping_type: adaptive
       time_step_count: 0
+      second_order_accuracy: yes
 
       realms:
         - realm_1
