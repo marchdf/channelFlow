@@ -4,6 +4,8 @@ nalu_abl_mesh:
 
   output_db: channel.exo
 
+  ioss_8bit_ints: no
+
   spec_type: bounding_box
 
   vertices:

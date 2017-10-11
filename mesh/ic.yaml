@@ -15,3 +15,5 @@ nalu_preprocess:
     velocity:
       Re_tau : 550
       viscosity : 0.0000157
+
+    turbulent_ke: yes
