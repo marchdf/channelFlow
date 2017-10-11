@@ -128,6 +128,7 @@ realms:
 
         - input_variables_from_file:
             velocity: velocity
+            turbulent_ke: turbulent_ke
 
         - source_terms:
             momentum: body_force
