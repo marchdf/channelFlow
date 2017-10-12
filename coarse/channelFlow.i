@@ -59,7 +59,6 @@ realms:
             max_iterations: 1
             convergence_tolerance: 1.0e-5
 
-
     initial_conditions:
       - constant: ic_1
         target_name: [interior]
