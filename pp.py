@@ -22,8 +22,8 @@ import numpy as np
 # ----------------------------------------------------------------
 
 # Get file names
-os.chdir('/Users/mhenryde/Desktop/tmp/channelFlow/')
-fdir = os.path.abspath('./coarse')
+workdir = os.path.dirname(os.path.abspath(__file__))
+fdir = os.path.abspath(os.path.join(workdir, 'coarse'))
 rdir = os.path.join(fdir, 'results')
 pattern = '*.e.*'
 fnames = sorted(glob.glob(os.path.join(rdir, pattern)))
@@ -41,9 +41,6 @@ exoreader.ElementBlocks = []
 
 # get time
 times = exoreader.TimestepValues
-
-# get active view
-view = GetActiveViewOrCreate('RenderView')
 
 # mesh quality
 mesh = MeshQuality(Input=exoreader)
