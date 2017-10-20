@@ -91,9 +91,25 @@ if __name__ == '__main__':
                  color=cmap[0])
     p[0].set_dashes(dashseq[0])
 
+    plt.figure(1)
+    p = plt.plot(mdf['time'],
+                 mdf['vavg'],
+                 ls='-',
+                 lw=2,
+                 color=cmap[0],
+                 label='v')
+    p[0].set_dashes(dashseq[0])
+    p = plt.plot(mdf['time'],
+                 mdf['wavg'],
+                 ls='-',
+                 lw=2,
+                 color=cmap[1],
+                 label='w')
+    p[0].set_dashes(dashseq[1])
+
     # ========================================================================
     # tau wall
-    area = mdf['area'][0]
+    area = 2 * np.pi * np.pi
     bdf = pd.read_csv(bname, delim_whitespace=True)
     tdf = pd.read_csv(tname, delim_whitespace=True)
 
@@ -104,7 +120,7 @@ if __name__ == '__main__':
                               + tdf['Fvy']**2
                               + tdf['Fvz']**2) / area
 
-    plt.figure(1)
+    plt.figure(2)
     p = plt.plot(bdf['Time'],
                  bdf['tau_wall'],
                  ls='-',
@@ -135,6 +151,18 @@ if __name__ == '__main__':
     plt.savefig('mdot.png', format='png')
 
     plt.figure(1)
+    ax = plt.gca()
+    plt.xlabel(r"$t~[s]$", fontsize=22, fontweight='bold')
+    plt.ylabel(r"$\overline{u}$", fontsize=22, fontweight='bold')
+    plt.setp(ax.get_xmajorticklabels(), fontsize=18, fontweight='bold')
+    plt.setp(ax.get_ymajorticklabels(), fontsize=18, fontweight='bold')
+    # ax.set_xlim([0, 1.2])
+    # ax.set_ylim([1, 5])
+    plt.tight_layout()
+    #plt.savefig('uavg.pdf', format='pdf')
+    plt.savefig('uavg.png', format='png')
+
+    plt.figure(2)
     ax = plt.gca()
     plt.xlabel(r"$t~[s]$", fontsize=22, fontweight='bold')
     plt.ylabel(r"$\tau_w$", fontsize=22, fontweight='bold')

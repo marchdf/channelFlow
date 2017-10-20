@@ -1,9 +1,3 @@
-#
-# Run this script on NERSC Edison with something like:
-#    start_pvbatch.sh 4 4 00:10:00 default debug `pwd`/pp.py
-#
-
-
 # ----------------------------------------------------------------
 # imports
 # ----------------------------------------------------------------

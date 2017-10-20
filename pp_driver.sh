@@ -4,13 +4,14 @@
 set -ex
 
 COMPILER=gcc
-SPACK_ROOT=/projects/windFlowModeling/ExaWind/NaluSharedInstallationC/spack
+SPACK_ROOT=/projects/windFlowModeling/ExaWind/SharedSoftware/spack
 SPACK=${SPACK_ROOT}/bin/spack
 
 module purge
 module use ${SPACK_ROOT}/share/spack/modules/$(${SPACK} arch)
-module load openmpi-1.10.4-gcc-5.2.0-hlho57g
-module load paraview
+
+module load $(${SPACK} module find -m tcl openmpi %${COMPILER})
+module load $(${SPACK} module find -m tcl paraview %${COMPILER})
 
 mpirun -np 24 pvbatch pp.py
 
