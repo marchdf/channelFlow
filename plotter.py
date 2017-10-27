@@ -76,7 +76,13 @@ if __name__ == '__main__':
     bname = os.path.join(fdir, 'bottomwall.dat')
     tname = os.path.join(fdir, 'topwall.dat')
     mname = os.path.join(fdir, 'mdot.dat')
+    delta = 1
+    height = 2 * delta
     rho0, mu = parse_ic(yname)
+    Re_tau = 550
+    utau = (mu * Re_tau) / (rho0 * delta)
+    tau_wall = rho0 * utau**2
+    kappa = 0.40
 
     # ========================================================================
     # inlet flux
@@ -88,7 +94,8 @@ if __name__ == '__main__':
                  mdf['mdot'],
                  ls='-',
                  lw=2,
-                 color=cmap[0])
+                 color=cmap[0],
+                 label='Nalu')
     p[0].set_dashes(dashseq[0])
 
     plt.figure(1)
@@ -136,6 +143,53 @@ if __name__ == '__main__':
                  label='Top')
     p[0].set_dashes(dashseq[1])
 
+    # ========================================================================
+    # Reference data
+
+    # Integrate velocity profile
+    yph = (2.0 * delta) * utau * rho0 / mu
+    C = (1.0 / kappa * np.log(1.0 + kappa * yph)) / (1 - np.exp(- yph / 11.0) -
+                                                     yph / 11.0 * np.exp(- yph / 3.0)) + np.log(kappa) / kappa
+    y = np.linspace(0, height, 500)
+    yp = np.minimum(y, height - y) * utau * rho0 / mu
+    reichardt = (1.0 / kappa * np.log(1.0 + kappa * yp)) + (C - np.log(kappa) /
+                                                            kappa) * (1 - np.exp(- yp / 11.0) - yp / 11.0 * np.exp(- yp / 3.0))
+    mdot_ref = rho0 * utau * np.trapz(reichardt, x=y) / height
+
+    plt.figure(0)
+    p = plt.plot([0, mdf['time'].iloc[-1]],
+                 [mdot_ref, mdot_ref],
+                 ls='-',
+                 lw=2,
+                 color=cmap[-1],
+                 label='Reichardt')
+
+    # Moser DNS data
+    fname = 'refdata/chan590.means'
+    df = pd.read_csv(fname,
+                     delim_whitespace=True,
+                     comment='#',
+                     header=None,
+                     names=['y', 'yplus', 'Umean', 'dUmeandy', 'Wmean',  'dWmeandy', 'Pmean'])
+
+    mdot_dns = rho0 * utau * np.trapz(df['Umean'], x=df['y'])
+
+    plt.figure(0)
+    p = plt.plot([0, mdf['time'].iloc[-1]],
+                 [mdot_dns, mdot_dns],
+                 ls='-',
+                 lw=2,
+                 color=cmap[-2],
+                 label='DNS 590')
+
+    plt.figure(2)
+    p = plt.plot([0, tdf['Time'].iloc[-1]],
+                 [tau_wall, tau_wall],
+                 ls='-',
+                 lw=2,
+                 color=cmap[-1],
+                 label='Ref.')
+
     # ======================================================================
     # Format the plots
     plt.figure(0)
@@ -146,8 +200,9 @@ if __name__ == '__main__':
     plt.setp(ax.get_ymajorticklabels(), fontsize=18, fontweight='bold')
     # ax.set_xlim([0, 1.2])
     # ax.set_ylim([1, 5])
+    legend = ax.legend(loc='best')
     plt.tight_layout()
-    #plt.savefig('mdot.pdf', format='pdf')
+    # plt.savefig('mdot.pdf', format='pdf')
     plt.savefig('mdot.png', format='png')
 
     plt.figure(1)
@@ -158,8 +213,9 @@ if __name__ == '__main__':
     plt.setp(ax.get_ymajorticklabels(), fontsize=18, fontweight='bold')
     # ax.set_xlim([0, 1.2])
     # ax.set_ylim([1, 5])
+    legend = ax.legend(loc='best')
     plt.tight_layout()
-    #plt.savefig('uavg.pdf', format='pdf')
+    # plt.savefig('uavg.pdf', format='pdf')
     plt.savefig('uavg.png', format='png')
 
     plt.figure(2)
@@ -172,5 +228,5 @@ if __name__ == '__main__':
     # ax.set_ylim([1, 5])
     legend = ax.legend(loc='best')
     plt.tight_layout()
-    #plt.savefig('tau_wall.pdf', format='pdf')
+    # plt.savefig('tau_wall.pdf', format='pdf')
     plt.savefig('tau_wall.png', format='png')

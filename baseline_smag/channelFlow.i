@@ -29,7 +29,7 @@ linear_solvers:
 realms:
 
   - name: realm_1
-    mesh: ../mesh/channel_coarse_ic.exo
+    mesh: ../mesh/channel_baseline_ic.exo
     use_edges: no
     automatic_decomposition_type: rcb
     support_inconsistent_multi_state_restart: yes
@@ -45,17 +45,11 @@ realms:
       solver_system_specification:
         velocity: solve_scalar
         pressure: solve_cont
-        turbulent_ke: solve_scalar
 
       systems:
 
         - LowMachEOM:
             name: myLowMach
-            max_iterations: 1
-            convergence_tolerance: 1.0e-5
-
-        - TurbKineticEnergy:
-            name: myTke
             max_iterations: 1
             convergence_tolerance: 1.0e-5
 
@@ -65,7 +59,6 @@ realms:
         value:
           pressure: 0
           velocity: [0.0,0.0,0.0]
-          turbulent_ke: 0.0
 
     material_properties:
       target_name: [interior]
@@ -83,14 +76,12 @@ realms:
       target_name: bottomwall
       wall_user_data:
         velocity: [0,0,0]
-        turbulent_ke: 0.0
         use_wall_function: no
 
     - wall_boundary_condition: bc_topwall
       target_name: topwall
       wall_user_data:
         velocity: [0,0,0]
-        turbulent_ke: 0.0
         use_wall_function: no
 
     - periodic_boundary_condition: bc_inlet_outlet
@@ -105,7 +96,7 @@ realms:
 
     solution_options:
       name: myOptions
-      turbulence_model: ksgs
+      turbulence_model: smagorinsky
 
       options:
         - hybrid_factor:
@@ -117,16 +108,13 @@ realms:
         - limiter:
             pressure: no
             velocity: no
-            turbulent_ke: no
 
         - projected_nodal_gradient:
             velocity: element
             pressure: element
-            turbulent_ke: element
 
         - input_variables_from_file:
             velocity: velocity
-            turbulent_ke: turbulent_ke
 
         - source_terms:
             momentum: body_force
@@ -159,7 +147,6 @@ realms:
        - pressure
        - pressure_force
        - tau_wall
-       - turbulent_ke
 
     restart:
       restart_data_base_name: restart/channelFlow.rst
