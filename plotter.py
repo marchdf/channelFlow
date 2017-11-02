@@ -70,7 +70,7 @@ if __name__ == '__main__':
         '-s', '--show', help='Show the plots', action='store_true')
     args = parser.parse_args()
 
-    fdir = os.path.abspath('./coarse')
+    fdir = os.path.abspath('./coarse_smag')
     rdir = os.path.abspath(os.path.join(fdir, 'results'))
     yname = os.path.join(fdir, 'channelFlow.i')
     bname = os.path.join(fdir, 'bottomwall.dat')

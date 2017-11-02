@@ -140,7 +140,7 @@ realms:
 
     output:
       output_data_base_name: results/channelFlow.e
-      output_frequency: 100
+      output_frequency: 1000
       output_node_set: no
       output_variables:
        - velocity
